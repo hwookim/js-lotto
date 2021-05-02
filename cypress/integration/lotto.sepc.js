@@ -10,7 +10,7 @@ describe("lotto", () => {
         cy.get(".money-input").type(money.toString());
         cy.get(".money-submit").click();
 
-        cy.get(".purchase-result").should("contain.text", lottoCnt);
+        cy.get(".purchase-result-text").should("contain.text", lottoCnt);
       });
 
       it(`${money} 입력 시 ${lottoCnt}개의 이미지가 생성된다.`, () => {
@@ -24,7 +24,7 @@ describe("lotto", () => {
     it("input 창의 enter 입력으로도 구입이 가능하다.", () => {
       cy.get(".money-input").type("1000").type("{enter}");
 
-      cy.get(".purchase-result").should("contain.text", 1);
+      cy.get(".purchase-result-text").should("contain.text", 1);
       cy.get(".lotto-img").should("have.length", 1);
     });
   });

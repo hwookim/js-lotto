@@ -1,4 +1,7 @@
 import { createElement } from "./utils/utils.js";
+import $store from "./store/index.js";
+
+import PurchaseResult from "./components/PurchaseResult.js";
 
 const template = `
 <div class="d-flex justify-center mt-5">
@@ -19,20 +22,7 @@ const template = `
         </button>
       </div>
     </form>
-    <section class="mt-9">
-      <div class="d-flex">
-        <label class="purchase-result flex-auto my-0"
-          >총 5개를 구매하였습니다.</label
-        >
-        <div class="flex-auto d-flex justify-end pr-1">
-          <label class="switch">
-            <input type="checkbox" class="lotto-numbers-toggle-button" />
-            <span class="text-base font-normal">번호보기</span>
-          </label>
-        </div>
-      </div>
-      <div class="lotto-img-box d-flex flex-wrap">
-      </div>
+    <section class="purchase-result mt-9">
     </section>
     <form class="mt-9">
       <label class="flex-auto d-inline-block mb-3"
@@ -87,15 +77,15 @@ const template = `
 `;
 
 export default function App(target) {
-  let money = 0;
-  let lottoCnt = 0;
-
   const dom = createElement(target, template);
 
   const moneyInput = dom.querySelector(".money-input");
   const moneySubmit = dom.querySelector(".money-submit");
-  const purchaseResult = dom.querySelector(".purchase-result");
-  const lottoImgBox = dom.querySelector(".lotto-img-box");
+
+  const init = () => {
+    PurchaseResult(".purchase-result");
+    initEventListeners();
+  };
 
   const initEventListeners = () => {
     moneyInput.addEventListener("keypress", onKeypressMoneyInput);
@@ -111,20 +101,11 @@ export default function App(target) {
   };
 
   const submitMoney = () => {
-    money = moneyInput.value.trim();
-    lottoCnt = Math.floor(money / 1000);
-
-    purchaseResult.innerText = `총 ${lottoCnt}개를 구매하였습니다.`;
-    lottoImgBox.innerHTML = "";
-    for (let i = 0; i < lottoCnt; i++) {
-      lottoImgBox.insertAdjacentHTML(
-        "beforeend",
-        `<span class="lotto-img mx-1 text-4xl">🎟️ </span>`
-      );
-    }
+    const money = moneyInput.value.trim();
+    $store.inputMoney(money);
   };
 
-  initEventListeners();
+  init();
 
   return dom;
 }
