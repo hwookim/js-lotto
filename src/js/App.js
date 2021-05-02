@@ -8,7 +8,16 @@ export default function App() {
   const lottoImgBox = document.querySelector(".lotto-img-box");
 
   const initEventListeners = () => {
+    moneyInput.addEventListener("keypress", onKeypressMoneyInput);
     moneySubmit.addEventListener("click", submitMoney);
+  };
+
+  const onKeypressMoneyInput = (event) => {
+    if (event.key !== "Enter") {
+      return;
+    }
+    event.preventDefault();
+    submitMoney();
   };
 
   const submitMoney = () => {
@@ -16,6 +25,7 @@ export default function App() {
     lottoCnt = Math.floor(money / 1000);
 
     purchaseResult.innerText = `총 ${lottoCnt}개를 구매하였습니다.`;
+    lottoImgBox.innerHTML = "";
     for (let i = 0; i < lottoCnt; i++) {
       lottoImgBox.insertAdjacentHTML(
         "beforeend",
