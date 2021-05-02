@@ -1,4 +1,4 @@
-import { createElement } from "./utils/utils.js";
+import { createElement, setVisible } from "./utils/utils.js";
 import $store from "./store/index.js";
 
 import PurchaseResult from "./components/PurchaseResult.js";
@@ -22,9 +22,9 @@ const template = `
         </button>
       </div>
     </form>
-    <section class="purchase-result mt-9">
+    <section class="purchase-result hidden mt-9">
     </section>
-    <form class="mt-9">
+    <form class="winning-numbers-form hidden mt-9">
       <label class="flex-auto d-inline-block mb-3"
         >지난 주 당첨번호 6개와 보너스 넘버 1개를 입력해주세요.</label
       >
@@ -81,9 +81,17 @@ export default function App(target) {
 
   const moneyInput = dom.querySelector(".money-input");
   const moneySubmit = dom.querySelector(".money-submit");
+  const winningNumbersForm = dom.querySelector(".winning-numbers-form");
 
   const init = () => {
-    PurchaseResult(".purchase-result");
+    const purchaseResult = PurchaseResult(".purchase-result");
+
+    $store.subscribe("money", () =>
+      setVisible(purchaseResult, $store.getLottoCnt())
+    );
+    $store.subscribe("money", () =>
+      setVisible(winningNumbersForm, $store.getLottoCnt())
+    );
     initEventListeners();
   };
 

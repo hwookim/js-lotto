@@ -7,4 +7,8 @@ const createElement = (target, htmlStr) => {
   return parents;
 };
 
-export { createElement };
+const setVisible = (target, pivot) => {
+  pivot ? target.classList.remove("hidden") : target.classList.add("hidden");
+};
+
+export { createElement, setVisible };
